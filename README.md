@@ -95,6 +95,22 @@ Clone this repository and follow the comprehensive documentation to seamlessly i
 
    Now, your database is set up and populated with the necessary data.
 
+### Install NumPy and scikit-learn
+
+1. Open your terminal or command prompt.
+
+2. Run the following command to install NumPy:
+
+    ```bash
+    pip install numpy
+    ```
+
+3. Run the following command to install scikit-learn:
+
+    ```bash
+    pip install scikit-learn
+    ```
+
 ### Final Notes
 
 - Ensure that your XAMPP server is running. Start it by opening the XAMPP Control Panel and clicking on the "Start" button for Apache and MySQL.
