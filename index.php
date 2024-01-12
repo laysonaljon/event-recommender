@@ -14,9 +14,9 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <script src="https://cdn.tailwindcss.com"></script>
-        <script src="http://localhost/js/tailwind.config.js"></script>
+        <script src="http://localhost/event-recommender/js/tailwind.config.js"></script>
 
-        <title>SB Admin 2 - Login</title>
+        <title>Event Demand Generation</title>
 
         <?php include'link.php'; ?>
     </head>

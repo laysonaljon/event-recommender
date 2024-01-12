@@ -236,11 +236,11 @@ if (isset($_POST['btnSubmit'])) {
                                 echo "No email and event ID found";
                             } else {
                         ?>
-                        <h5 class="mb-3 text-base font-extrabold text-gray-900 md:text-xl dark:text-white">
+                        <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">
                         Interest Survey Form
                         </h5>
-                        <p class="text-sm font-normal text-gray-500 dark:text-gray-400">Tell us your interest and we'll take care of the rest!!</p>
-                        <p class="mb-3 text-sm font-italic text-gray-500 dark:text-gray-400">Choose 3 topics you are interested the most.</p>
+                        <p class="mb-3 text-sm font-normal text-gray-500 dark:text-gray-400">Tell us your interest and we'll take care of the rest!!</p>
+
                         <form method="post">
                             <input type="hidden" value="<?php echo $_GET['eventID'] ?>" name="event_id">
                             <input type="hidden" value="<?php echo $_GET['email'] ?>" name="email">
