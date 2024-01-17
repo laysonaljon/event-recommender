@@ -207,7 +207,7 @@
                 
                         To join us, simply click on the link below, and you\'ll be whisked away to all the excitement and fun that awaits:
                 
-                        <a href="http://localhost/EVENTCSV/event-form.php?eventID='.$event_id.'&email='.$value.'">Click here to access the event</a>
+                        <a href="http://localhost/event-recommender/event-form.php?eventID='.$event_id.'&email='.$value.'">Click here to access the event</a>
                 
                         This is your opportunity to connect, learn, and enjoy. Don\'t miss out on the chance to be part of something amazing. We look forward to seeing you there!
                 
