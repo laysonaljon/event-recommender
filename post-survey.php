@@ -89,7 +89,7 @@
 
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="http://localhost/js/tailwind.config.js"></script>
+<script src="http://localhost/event-recommender/js/tailwind.config.js"></script>
 
 
 <!-- Your HTML code remains unchanged -->

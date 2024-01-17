@@ -110,7 +110,7 @@
                                                     <button class="btn btn-warning" disabled><i class="fas fa-edit"></i></button>
                                                     <a href="event-session.php?eventID=' . $event['event_id'] . '" class="btn btn-primary"><i class="fas fa-eye"></i></a>
                                                     <a href="send-email-event-done.php?eventID=' . $event['event_id'] . '" class="btn btn-success"><i class="fa fa-telegram green-color"></i></a>
-                                                    <a href="event-dashboard.php?eventID=' . $event['event_id'] . '" class="btn btn-info"><i class="fa fa-dashboard green-color"></i></a>
+                                                    <a href="event-dashboard.php?eventID=' . $event['event_id'] . '" class="btn btn-info"><i class="fas fa-user-friends green-color"></i></a>
                                                         ';
                                                 }
                                                 else{
@@ -119,7 +119,7 @@
                                                     <a href="event-edit.php?eventID=' . $event['event_id'] . '" class="btn btn-warning"><i class="fas fa-edit"></i></a>
                                                     <a href="event-session.php?eventID=' . $event['event_id'] . '" class="btn btn-primary"><i class="fas fa-eye"></i></a>
                                                     <a href="send-email-event-done.php?eventID=' . $event['event_id'] . '" class="btn btn-success"><i class="fa fa-telegram green-color"></i></a>
-                                                    <a href="event-dashboard.php?eventID=' . $event['event_id'] . '" class="btn btn-info"><i class="fa fa-dashboard green-color"></i></a>
+                                                    <a href="event-dashboard.php?eventID=' . $event['event_id'] . '" class="btn btn-info"><i class="fas fa-user-friends green-color"></i></a>
                                                     ';
                                                 }
                                             echo '

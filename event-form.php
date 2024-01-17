@@ -196,7 +196,7 @@ if (isset($_POST['btnSubmit'])) {
 }
 ?>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="http://localhost/js/tailwind.config.js"></script>
+<script src="http://localhost/event-recommender/js/tailwind.config.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <style>
