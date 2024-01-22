@@ -117,6 +117,16 @@ if (isset($_POST['btnSubmit'])) {
             $json_data = json_decode($line, true);
     
             if ($json_data) {
+                // Initialize email content outside the loop
+                $emailContent = '
+                    <body style="text-align: center; font-family: Arial, sans-serif; background-color: #203149; color: #333; margin: 0 auto; padding: 20px; border-radius: 10px; max-width: 900px;">
+                        <h1 style="color: #ffffff; font-size: 36px; font-weight: bold; font-family: Remachine Script, cursive;">Your Journey Map is Ready!</h1>
+                        <div style="margin: 0 auto; max-width: 600px;">
+                            <p style="font-size: 20px; line-height: 150%; text-align: center; color: #ffffff; margin-bottom: 15px;">
+                                Here\'s your personalized journey map based on the interests you\'ve selected in the survey.  
+                            </p>
+                    ';
+                
                 foreach ($json_data as $result) {
                     $session_id = $result['Session ID'];
                     $session_title = $result['Session Title'];
@@ -126,37 +136,91 @@ if (isset($_POST['btnSubmit'])) {
                     $speaker = $result['Speaker'];
                     // Create a unique identifier for the time slot based on Date1 and the time
                     $time_slot_identifier = "$date1-$time1";
-    
+            
                     // Check if the current session_id is different from the previous one
                     if (!in_array($session_title, $printed_session_ids)) {
                         // Check if Time1 is available and Date1/Time1 doesn't conflict with previous recommendations
                         if (!empty($time1) && !in_array($time_slot_identifier, $reserved_time1)) {
                             // Add session information to the email content with Time1
-                            $emailContent .= "<p>Session Title: " . $result['Session Title'] . "</p>";
-                            $emailContent .= "<p>Speaker: ". $speaker ."</p>";
-                            $emailContent .= "<p>Date: $date1</p>";
-                            $emailContent .= "<p>Time Morning: $time1</p>";
-                            $emailContent .= "<hr>";
+                            $emailContent .= '
+                            <div style="background-color: #bcd5ca; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">'.$result['Session Title'].'</p>
+                                
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://tuscomprasfit.com/wp-content/uploads/2022/05/usuario-de-perfil-400x400.png" alt="Speaker Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$speaker.'</p>
+                                </div>
+
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://icones.pro/wp-content/uploads/2022/08/icone-du-calendrier-des-evenements-vert.png" alt="Calendar Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$date1.'</p>
+                                </div>
+
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://icones.pro/wp-content/uploads/2021/03/symbole-de-l-horloge-verte.png" alt="Calendar Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$time1.'</p>
+                                </div>
+                            </div>
+                            ';
                             // Reserve Time1
                             $reserved_time1[] = $time_slot_identifier;
                         } elseif (!empty($time2) && !in_array($time_slot_identifier, $reserved_time2)) {
                             // Add session information to the email content with Time2
-                            $emailContent .= "<p>Session Title: " . $result['Session Title'] . "</p>";
-                            $emailContent .= "<p>Speaker: ". $speaker ."</p>";
-                            $emailContent .= "<p>Date: $date1</p>";
-                            $emailContent .= "<p>Time Afternoon: $time2</p>";
-                            $emailContent .= "<hr>";
+                            $emailContent .= '
+                            <div style="background-color: #bcd5ca; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center; ">
+                                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">'.$result['Session Title'].'</p>
+                                
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://tuscomprasfit.com/wp-content/uploads/2022/05/usuario-de-perfil-400x400.png" alt="Speaker Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$speaker.'</p>
+                                </div>
+
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://icones.pro/wp-content/uploads/2022/08/icone-du-calendrier-des-evenements-vert.png" alt="Calendar Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$date1.'</p>
+                                </div>
+
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://icones.pro/wp-content/uploads/2021/03/symbole-de-l-horloge-verte.png" alt="Calendar Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$time2.'</p>
+                                </div>
+                            </div>
+                                            ';
                             // Reserve Time2
                             $reserved_time2[] = $time_slot_identifier;
                         }
                         // Add the current session_id to the printed_session_ids array
                         $printed_session_ids[] = $session_title;
                     }
-                }
+                }    
+                // Close the body tag after the loop
+                $emailContent .= '
+                                <div style="background-color: #071250; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 15px;">
+                                    <p style="font-weight: bold; font-size: 16px; line-height: 150%; color: #ffffff; margin-bottom: 15px;">
+                                        Don\'t forget to print the attached QR code from this email; <br>it will serve as your ID for the event sessions.
+                                    </p>
+                                    <p style="font-size: 32px; line-height: 150%; color: #ee0909; margin-bottom: 15px;">
+                                        NO QR CODE, NO ENTRY!
+                                    </p>
+                                </div>  
+                            </div>
+
+                            <p style="font-size: 16px; line-height: 150%; text-align: center; color: #ffffff; margin-bottom: 15px;">
+                                Note: You can also attend additional sessions during the event.
+                            </p>
+                            
+                            <p style="font-size: 16px; color: #ffffff; margin-bottom: 15px; font-style: italic;">
+                                If you have any questions or need assistance, please feel free to contact us at <br> 
+                                <a href="mailto:email@gmail.com" style="color: #3498db; text-decoration: none;">email@gmail.com</a> or <a href="tel:09123456789" style="color: #3498db; text-decoration: none;">09123456789</a>.
+                            </p>
+                        </body>
+                         ';
+   
             } else {
                 echo 'Invalid JSON data received from Python<br>';
             }
         }
+        // session email
         $mail = new PHPMailer(true);
         // SMTP settings (you may need to configure these)
         $mail->isSMTP();
@@ -172,13 +236,10 @@ if (isset($_POST['btnSubmit'])) {
     
         $mail->addAddress($email); // Recipient's email address
         $mail->isHTML(true);
-        $mail->Subject = "SESSION RECOMMENDED";
+        $mail->Subject = "Event Journey Map";
     
         // Add the QR code image as an attachment
         $mail->addAttachment($outputFileName);
-    
-        // Embed the QR code image in the email body
-        $emailContent .= '<br><img src="cid:' . $outputFileName . '>';
         $mail->Body = $emailContent;
     
         // Send the email
@@ -229,17 +290,17 @@ if (isset($_POST['btnSubmit'])) {
                             echo '<img class="h-auto max-w-full mx-auto" src="https://media4.giphy.com/media/Bc4oup2pdP5iKFAYiF/200w.gif?cid=6c09b9520ewqcrypuassw0qj1nck4jcukefjjr5322adfum0&ep=v1_gifs_search&rid=200w.gif&ct=g" alt="image description">';
                         } else {
                             if ($reqPersons['status'] == 1) {
-                                echo '<h5 class="mb-3 text-base font-semibold text-gray-900 md:text-l dark:text-white">Thank you for sharing your Interest with us!!</h5>';
-                                echo '<p class="mb-3 text-sm font-normal text-gray-500 dark:text-gray-400">We will send you a journey map for the event based on your interest.</p>'; 
+                                echo '<h5 class="mb-3 text-base font-semibold text-gray-900 md:text-l dark:text-white text-center">Thank you for sharing your Interest with us!!</h5>';
+                                echo '<p class="mb-3 text-sm font-normal text-gray-500 dark:text-gray-400 text-center">We will send you a journey map for the event based on your interest.</p>'; 
                                 echo '<img class="h-auto max-w-full mx-auto" src="https://assets-global.website-files.com/6091b7081a1d7e13ccd7603a/63f018f7c54c02f7cdc1c256_giphy-3.gif" alt="image description">';
                             } elseif (isset($message)) {
                                 echo "No email and event ID found";
                             } else {
                         ?>
-                        <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">
+                        <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white text-center">
                         Interest Survey Form
                         </h5>
-                        <p class="mb-3 text-sm font-normal text-gray-500 dark:text-gray-400">Tell us your interest and we'll take care of the rest!!</p>
+                        <p class="mb-3 text-sm font-normal text-gray-500 dark:text-gray-400 text-center">Tell us your interest and we'll take care of the rest!!</p>
 
                         <form method="post">
                             <input type="hidden" value="<?php echo $_GET['eventID'] ?>" name="event_id">

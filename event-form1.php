@@ -33,6 +33,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="icon" href="calendar-svgrepo-com.svg" type="image/svg+xml">
     <title>Event</title>
 
 
@@ -121,7 +122,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright Demand &copy; Generation</span>
+                        <span> &copy; Copyright Demand Generation</span>
                     </div>
                 </div>
             </footer>

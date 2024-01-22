@@ -14,7 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Event</title>
-
+    <link rel="icon" href="calendar-svgrepo-com.svg" type="image/svg+xml">
     <?php include 'link.php'; ?>
 
     <!-- Add the following line to include jQuery -->

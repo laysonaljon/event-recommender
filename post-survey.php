@@ -252,19 +252,43 @@ if (isset($_POST['btnSubmit'])) {
     // Remove the temporary file
     unlink($tempFile);
     if ($returnCode === 0) {
-        $emailContent .= "<h3>Product Recommended base on your preferences</h3>";
-        $emailContent .= "<h4>Product List</h4>";
+        $emailContent = '
+            <body style="text-align: center; font-family: Arial, sans-serif; background-color: #050a19; color: #333; margin: 0 auto; padding: 20px; border-radius: 10px; max-width: 900px;">
+                <h1 style="color: #ffffff; font-size: 36px; font-weight: bold; font-family: Remachine Script, cursive;">Discover top-notch products tailored just for you!</h1>
+                <img src="https://i.gifer.com/7S7F.gif" alt="Event Image" draggable="false" style="width: 600px; height: 400px;" />
+                
+                
+                <div style="margin: 0 auto; max-width: 600px; margin-bottom: 20px;">
+                    <p style="font-size: 20px; line-height: 150%; text-align: center; color: #ffffff; margin-bottom: 50px;">
+                        We hope this email finds you well and that you\'ve been enjoying the sessions and content you recently attended. Your interests and preferences matter to us, and we\'re thrilled to share some personalized product recommendations tailored just for you.
+                    </p>
+        ';
         foreach ($output as $line) {
             // Parse the JSON data sent by the Python script
             $json_data = json_decode($line, true);
             if ($json_data) {
                 foreach ($json_data as $result) {
                      $product_name = $result['product_name'];
-                     $emailContent .= "<br>". $product_name;
-                     
+                     $emailContent .= '
+                     <div style="background-color: #24a74b; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: left; display: flex; align-items: center;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/10248/10248137.png" alt="Speaker Icon" style="display: inline-block; width: 30px; height: 30px; margin-right: 5px;">
+                        <h2 style="display: inline-block; color: #ffffff; font-size: 16px; font-weight: bold; margin-bottom: 5px;">'.$product_name.'</h2>
+                    </div>
+                     ';
                 }
             }
         }
+
+        $emailContent .= '
+                    </div>
+
+                    <p style="font-size: 16px; color: #ffffff; margin-bottom: 15px; margin-top: 50px; font-style: italic;">
+                        If you have any questions or need assistance, please feel free to contact us at <br> 
+                        <a href="mailto:email@gmail.com" style="color: #9ec6e0; text-decoration: none;">email@gmail.com</a> or <a href="tel:09123456789" style="color: #9ec6e0; text-decoration: none;">09123456789</a>.
+                    </p>
+                
+                </body>
+                ';
             $mail = new PHPMailer(true);
             // SMTP settings (you may need to configure these)
             $mail->isSMTP();
@@ -280,7 +304,7 @@ if (isset($_POST['btnSubmit'])) {
 
             $mail->addAddress($email); // Recipient's email address
             $mail->isHTML(true);
-            $mail->Subject = "Product Recommendation";
+            $mail->Subject = "Our Curated Selection for You!";
 
             // Embed the QR code image in the email body
             $mail->Body = $emailContent;

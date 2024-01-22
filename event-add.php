@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <link rel="icon" href="calendar-svgrepo-com.svg" type="image/svg+xml">
     <title>Add Event</title>
 
 
@@ -80,7 +80,7 @@
             <footer class=" bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright Demand &copy; Generation</span>
+                        <span> &copy; Copyright Demand Generation</span>
                     </div>
                 </div>
             </footer>
@@ -103,7 +103,7 @@
 
 </body>
 </html>
-
+// initial email
 <?php
     if (isset($_POST['btnSubmit'])) {
         $connection = openConnection();
@@ -196,29 +196,43 @@
 
                     foreach ($data as $value) {
                         $emailContent = '
-                        Subject: Join Us for an Exciting Event!
-                
-                        Dear Participant,
-                
-                        We\'re thrilled to invite you to a special event that promises to be an unforgettable experience. Your presence will make this occasion even more exceptional.
-                
-                        **Event Details:**
-                        - Event Name: '.$eventTitle.'
-                
-                        To join us, simply click on the link below, and you\'ll be whisked away to all the excitement and fun that awaits:
-                
-                        <a href="http://localhost/event-recommender/event-form.php?eventID='.$event_id.'&email='.$value.'">Click here to access the event</a>
-                
-                        This is your opportunity to connect, learn, and enjoy. Don\'t miss out on the chance to be part of something amazing. We look forward to seeing you there!
-                
-                        If you have any questions or need assistance, please feel free to contact us at email@gmail.com or 09123456789.
-                
-                        Thank you for being a part of this incredible journey. We can\'t wait to celebrate with you!
+                        <body style="text-align: center; font-family: Arial, sans-serif; background-color: #1f432d; color: #333; margin: 0 auto; padding: 20px; border-radius: 10px; max-width: 900px;">
+                            <h1 style="color: #ffffff; font-size: 36px; font-weight: bold; font-family: Remachine Script, cursive;">Join Us for an Exciting Event!</h1>
+                            <img src="https://www.dixonusd.org/higgins/wp-content/uploads/sites/5/2023/10/5f51e401c1ad366c50bc64c1_hero-image-Events.png" alt="Event Image" draggable="false" style="width: 300px; height: 200px;" />
+                            <h2 style="color: #ffffff; font-size: 30px; font-weight: bold;">'.$eventTitle.'</h2>
+                            
+                            <div style="margin: 0 auto; max-width: 600px;">
+                                <p style="font-size: 20px; line-height: 150%; text-align: center; color: #ffffff; margin-bottom: 15px;">
+                                    Exciting news! We\'re inviting you to a dynamic and engaging seminar that\'s all about unlocking your potential and having a blast while doing it. Get ready for an event that\'s as fun as it is enlightening!
+                                </p>
+
+                                <p style="font-size: 16px; line-height: 150%; text-align: center; color: #ffffff; margin-bottom: 20px;">
+                                    This is your chance to soak up knowledge from industry pros, connect with fellow enthusiasts, and discover new passion. Trust us; you won\'t want to miss out!
+                                </p>
+                                
+                                <p style="font-size: 16px; line-height: 150%; text-align: center; color: #ffffff; margin-bottom: 15px; font-style: italic;">
+                                    Click the button below to take the interest survey and secure your spot:
+                                </p>
+                                
+                                <p style="text-align: center; margin: 40px;">
+                                    <a href="http://localhost/event-recommender/event-form.php?eventID='.$event_id.'&email='.$value.'"
+                                    style="display: inline-block; padding: 12px 24px; background-color: transparent; color: #ffffff; text-decoration: none; border: 2px solid #ffffff; border-radius: 5px; font-weight: bold; font-size: 16px; transition: background-color 0.3s;">
+                                        Take the Interest Survey
+                                    </a>
+                                </p>
+                            </div>
+
+
+                            <p style="font-size: 16px; color: #ffffff; margin-bottom: 15px; font-style: italic;">
+                                If you have any questions or need assistance, please feel free to contact us at <br> 
+                                <a href="mailto:email@gmail.com" style="color: #3498db; text-decoration: none;">email@gmail.com</a> or <a href="tel:09123456789" style="color: #3498db; text-decoration: none;">09123456789</a>.
+                            </p>
+
+                        </body>
                         ';
-                
                         $mail->addAddress($value); // Recipient's email address
                         $mail->isHTML(true);
-                        $mail->Subject = "Join Us for an Exciting Event!";
+                        $mail->Subject = $eventTitle;
                         $mail->Body = $emailContent;
                 
                         if ($mail->send()) {
