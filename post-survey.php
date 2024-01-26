@@ -38,9 +38,9 @@
         }
         return $sessionsInfo;
     }
-    function getTechnologiesLine($connection, $session_title){
+    function getTechnologiesLine($connection, $session_title, $event_id){
         $technologiesArray = array();
-        $sqlTechnologies = "SELECT * FROM event_sessions where session_title = '$session_title'";
+        $sqlTechnologies = "SELECT * FROM event_sessions  where event_id = '$event_id' and session_title = '$session_title'";
         $result = mysqli_query($connection, $sqlTechnologies);
         if($result){
             while ($row = mysqli_fetch_assoc($result)) {
@@ -125,18 +125,31 @@
                                             <div class="w-full max-w mb-2 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
                                                 <p class="text-m font-normal text-gray-900 dark:text-gray-400">What topics from this session do you thinks would be useful to you?</p>
                                             
-                                                    <div class="columns-2 p-2">
+                                                <div class="columns-2 p-2">
                                                     <?php
-                                                    $technologies = getTechnologiesLine($connection, $session_title);
-                                                    foreach ($technologies as $checkboxValue) {
+                                                        $technologies = getTechnologiesLine($connection, $session_title, $event_id);
+                                                        $existingTechLines = []; // Array to store existing technology lines
+
+                                                        foreach ($technologies as $checkboxValue) {
+                                                            $techLine = $checkboxValue['technology_line'];
+
+                                                            // Check if the technology line already exists
+                                                            if (!in_array($techLine, $existingTechLines)) {
+                                                                // If it doesn't exist, add it to the array of existing technology lines
+                                                                $existingTechLines[] = $techLine;
+
+                                                                // Output the checkbox HTML
+                                                                ?>
+                                                                <div class="w-full flex mb-1 items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
+                                                                    <label for="technology_line[]" class="w-full py-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                                        <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox" name="technology_line[]" id="technology_<?php echo $techLine; ?>" value="<?php echo $techLine; ?>">
+                                                                        <?php echo $techLine; ?>
+                                                                    </label>
+                                                                </div>
+                                                                <?php
+                                                            }
+                                                        }
                                                     ?>
-                                                    <div class="w-full flex mb-1 items-center ps-4 border border-gray-200 rounded dark:border-gray-700">
-                                                        <label for="technology_line[]" class="w-full py-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                            <input class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" type="checkbox"  name="technology_line[]" id="technology_<?php echo $checkboxValue['technology_line']; ?>" value="<?php echo $checkboxValue['technology_line']; ?>">
-                                                            <?php echo $checkboxValue['technology_line']; ?>
-                                                        </label>
-                                                    </div>
-                                                    <?php  } ?>
                                                 </div>
 
                                             </div>
@@ -169,10 +182,10 @@
                 echo '
                     <div class="col-md-12 d-flex justify-content-center align-items-center vh-100">
                         <div class="card bg-primary">
-                            <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
-                                <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-l dark:text-white">Sorry, you did not attend this event!</h5>
-                                <p class="mb-3 text-sm font-normal text-gray-500 dark:text-gray-400">Please check your email again or contact the event organizer for more details. Thank you!</p>
-                                <img class="h-auto max-w-full mx-auto" src="https://media4.giphy.com/media/Bc4oup2pdP5iKFAYiF/200w.gif?cid=6c09b9520ewqcrypuassw0qj1nck4jcukefjjr5322adfum0&ep=v1_gifs_search&rid=200w.gif&ct=g" alt="image description">
+                            <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bgS-gray-800 dark:border-gray-700">
+                                <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-l dark:text-white ">Your response was already sent!</h5>
+                                <p class="mb-3 text-sm font-normal text-gray-500 dark:text-gray-400">Thank you for attending the event and responding to this survey, we hope you had a great time with us!</p>
+                                <img class="h-auto max-w-full mx-auto" src="https://media2.giphy.com/media/nnZZfXUevHdz27aH7u/giphy.gif?cid=ecf05e472kgs6a5ubeemzq7aq6bkpy309bgm93y5zz79li92&ep=v1_gifs_related&rid=giphy.gif&ct=g" alt="image description">
                             </div>
                         </div>
                     </div>
