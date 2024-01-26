@@ -276,18 +276,29 @@ if (isset($_POST['btnSubmit'])) {
                         We hope this email finds you well and that you\'ve been enjoying the sessions and content you recently attended. Your interests and preferences matter to us, and we\'re thrilled to share some personalized product recommendations tailored just for you.
                     </p>
         ';
+        $processedProductNames = []; // Array to store processed product names
+
         foreach ($output as $line) {
             // Parse the JSON data sent by the Python script
             $json_data = json_decode($line, true);
+
             if ($json_data) {
                 foreach ($json_data as $result) {
-                     $product_name = $result['product_name'];
-                     $emailContent .= '
-                     <div style="background-color: #24a74b; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: left; display: flex; align-items: center;">
-                        <img src="https://cdn-icons-png.flaticon.com/512/10248/10248137.png" alt="Speaker Icon" style="display: inline-block; width: 30px; height: 30px; margin-right: 5px;">
-                        <h2 style="display: inline-block; color: #ffffff; font-size: 16px; font-weight: bold; margin-bottom: 5px;">'.$product_name.'</h2>
-                    </div>
-                     ';
+                    $product_name = $result['product_name'];
+
+                    // Check if the product name is not already processed
+                    if (!in_array($product_name, $processedProductNames)) {
+                        // Add the product name to the processed list
+                        $processedProductNames[] = $product_name;
+
+                        // Add the product name to the email content
+                        $emailContent .= '
+                            <div style="background-color: #24a74b; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: left; display: flex; align-items: center;">
+                                <img src="https://cdn-icons-png.flaticon.com/512/10248/10248137.png" alt="Speaker Icon" style="display: inline-block; width: 30px; height: 30px; margin-right: 5px; padding:5px">
+                                <h2 style="display: inline-block; color: #ffffff; font-size: 16px; font-weight: bold; margin-bottom: 5px;">'.$product_name.'</h2>
+                            </div>
+                        ';
+                    }
                 }
             }
         }
