@@ -79,6 +79,26 @@ Clone this repository and follow the comprehensive documentation to seamlessly i
 
    Now, you've moved the repository to `C:\xampp\htdocs`.
 
+### Configure XAMPP
+1. Open XAMPP Control Panel and start Apache.
+
+2. Go to Apache config.
+
+3. Select "php.ini".
+
+4. Find the line ";extension=gd".
+
+5. Remove the semicolon at the beginning to enable GD: "extension=gd".
+
+6. Save changes and close.
+
+7. Restart Apache.
+
+![415500071_677326124306965_1997418624583692692_n](https://github.com/laysonaljon/event-recommender/assets/80148930/af8fc6ec-70eb-4f85-bd77-0b793d9f82e1)
+
+![419995843_1522626908577502_1778546615210340762_n](https://github.com/laysonaljon/event-recommender/assets/80148930/4290cf22-88f6-49c6-9667-7c0b12442846)
+
+
 ### Set Up the Database
 
 1. Open phpMyAdmin by visiting [http://localhost/phpmyadmin](http://localhost/phpmyadmin) in your web browser.
