@@ -1,8 +1,8 @@
 <?php
-	DEFINE("DB_SERVER", "laundryandwash.com");
-	DEFINE("DB_USERNAME", "phpxffcj_laundry");
-	DEFINE("DB_PASSWORD", "JkH]!4c7P)V?");
-	DEFINE("DB_NAME", "phpxffcj_event");
+	DEFINE("DB_SERVER", "eventrecommender.com");
+	DEFINE("DB_USERNAME", "vdeeehio_dev");
+	DEFINE("DB_PASSWORD", "(AdO4yGOUIEo");
+	DEFINE("DB_NAME", "vdeeehio_new_event");
 
 	function openConnection(){
 		$con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);

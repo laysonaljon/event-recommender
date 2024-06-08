@@ -316,15 +316,15 @@ if (isset($_POST['btnSubmit'])) {
             $mail = new PHPMailer(true);
             // SMTP settings (you may need to configure these)
             $mail->isSMTP();
-            $mail->Host = 'mail.laundryandwash.com';
+            $mail->Host = 'mail.eventrecommender.com';
             $mail->SMTPSecure = 'tls'; // Use 'tls' for TLS encryption
             $mail->SMTPAuth = true;
-            $mail->Username = 'event@laundryandwash.com';
-            $mail->Password = 'GhZ%3SiW]x=Z';
+            $mail->Username = 'event@eventrecommender.com';
+            $mail->Password = '[1zVfl_oEPEB';
             $mail->Port = 587; // Change to your SMTP port
 
             // Set the "From" address correctly
-            $mail->setFrom('event@laundryandwash.com', 'Event Organizer');
+            $mail->setFrom('event@eventrecommender.com', 'Event Organizer');
 
             $mail->addAddress($email); // Recipient's email address
             $mail->isHTML(true);
@@ -338,7 +338,7 @@ if (isset($_POST['btnSubmit'])) {
                 echo '<script type="text/javascript">
                     swal({
                         title: "Success",
-                        text: "Redirecting in 2 seconds.\nSuccessfully Answered survey",
+                        text: "Successfully Answered survey",
                         icon: "success",
                         timer: 2000,
                         showConfirmButton: false
