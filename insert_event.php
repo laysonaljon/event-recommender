@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 foreach ($data as $value) {
                     $to = $value;
                     $subject = 'the subject';
-                    $message = '<a href="http:laundryandwash.comt/event/event-add.php?eventID='.$event_id.'&email='.$to.'">Click here to access the event</a>';
+                    $message = '<a href="http:eventrecommender.comt/event/event-add.php?eventID='.$event_id.'&email='.$to.'">Click here to access the event</a>';
                     $headers = "From: webmaster@example.com\r\n";
                     $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 

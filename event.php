@@ -217,7 +217,7 @@
                 <script type="text/javascript">
                     swal({
                         title: "Success",
-                        text: "Redirecting in 2 seconds.\nEvent Deleted",
+                        text: "Event Deleted",
                         icon: "success",
                         timer: 2000,
                         showConfirmButton: false

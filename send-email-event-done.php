@@ -13,11 +13,11 @@ ini_set('display_errors', 1);
 set_time_limit(60); // Increase the time limit to 60 seconds (adjust as needed)
 
 // Set the HELO name
-$from = "event@laundryandwash.com"; // Use a valid email address from your domain
+$from = "event@eventrecommender.com"; // Use a valid email address from your domain
 
 // SMTP authentication credentials
-$username = "event@laundryandwash.com"; // Use your actual email address from cPanel
-$password = "GhZ%3SiW]x=Z"; // Use your cPanel password
+$username = "event@eventrecommender.com"; // Use your actual email address from cPanel
+$password = "[1zVfl_oEPEB"; // Use your cPanel password
 
 // Use PHPMailer
 require 'vendor/autoload.php'; // Include Composer's autoloader
@@ -27,7 +27,7 @@ use PHPMailer\PHPMailer\Exception;
 
 $mail = new PHPMailer(true);
 $mail->isSMTP();
-$mail->Host = 'mail.laundryandwash.com';
+$mail->Host = 'mail.eventrecommender.com';
 $mail->Port = 587; // Use the correct SMTP port for TLS
 $mail->SMTPSecure = 'tls'; // Use 'tls' for TLS encryption
 $mail->SMTPAuth = true;
@@ -55,7 +55,7 @@ try {
 echo '<script type="text/javascript">
         swal({
             title: "Success",
-            text: "Redirecting in 2 seconds.\nSuccessfully Send an email",
+            text: "Successfully Send an email",
             icon: "success",
             timer: 2000,
             showConfirmButton: false

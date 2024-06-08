@@ -185,14 +185,14 @@
                     $mail = new PHPMailer(true);
                     // SMTP settings (you may need to configure these)
                     $mail->isSMTP();
-                    $mail->Host = 'mail.laundryandwash.com';
+                    $mail->Host = 'mail.eventrecommender.com';
                     $mail->SMTPSecure = 'tls'; // Use 'tls' for TLS encryption
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'event@laundryandwash.com';
-                    $mail->Password = 'GhZ%3SiW]x=Z';
+                    $mail->Username = 'event@eventrecommender.com';
+                    $mail->Password = '[1zVfl_oEPEB';
                     $mail->Port = 587; // Change to your SMTP port
                     // Set the "From" address correctly
-                    $mail->setFrom('event@laundryandwash.com', 'New Event');
+                    $mail->setFrom('event@eventrecommender.com', 'New Event');
 
                     foreach ($data as $value) {
                         $emailContent = '
@@ -250,7 +250,7 @@
         echo '<script type="text/javascript">
                     swal({
                         title: "Success",
-                        text: "Redirecting in 2 seconds.\nSuccessfully add event",
+                        text: "Successfully add event",
                         icon: "success",
                         timer: 2000,
                         showConfirmButton: false
