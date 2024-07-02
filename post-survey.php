@@ -29,7 +29,8 @@
 
     function getAttendance($connection, $email, $event_id){
         $sessionsInfo = array();
-        $sqlSelectAttendance = "SELECT * FROM attendance as a join event_sessions as es on a.session_title = es.session_title  where a.event_id = '$event_id' and a.email = '$email'";
+        $sqlSelectAttendance = "SELECT * FROM attendance as a 
+                                join event_sessions as es on a.session_title = es.session_title  where a.event_id = '$event_id' and a.email = '$email'";
         $result = mysqli_query($connection, $sqlSelectAttendance);
         if($result){
             while ($row = mysqli_fetch_assoc($result)) {
@@ -291,6 +292,8 @@ if (isset($_POST['btnSubmit'])) {
                         // Add the product name to the processed list
                         $processedProductNames[] = $product_name;
 
+                        $strsqlInsertProduct = "INSERT INTO product_recommend (event_id, email, product_name) VALUES('$event_id', '$email', '$product_name')";
+                        mysqli_query($connection, $strsqlInsertProduct);
                         // Add the product name to the email content
                         $emailContent .= '
                             <div style="background-color: #24a74b; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: left; display: flex; align-items: center;">
@@ -316,11 +319,11 @@ if (isset($_POST['btnSubmit'])) {
             $mail = new PHPMailer(true);
             // SMTP settings (you may need to configure these)
             $mail->isSMTP();
-            $mail->Host = 'mail.eventrecommender.com';
+            $mail->Host = 'sandbox.smtp.mailtrap.io';
             $mail->SMTPSecure = 'tls'; // Use 'tls' for TLS encryption
             $mail->SMTPAuth = true;
-            $mail->Username = 'event@eventrecommender.com';
-            $mail->Password = '[1zVfl_oEPEB';
+            $mail->Username = 'cfb40b95b2f107';
+            $mail->Password = 'eb5ad7a1ab00fc';
             $mail->Port = 587; // Change to your SMTP port
 
             // Set the "From" address correctly
