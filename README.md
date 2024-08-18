@@ -18,12 +18,16 @@ This repository houses the core components of our innovative demand generation s
    - Send personalized journey maps directly to participants via email.
    - Deliver timely and relevant information about recommended sessions.
 
-4. **Feedback Collection:**
+4. **Event and Participant Tracking:**
+   -  Track each participant's session attendance and compare it with their recommended sessions.
+   -  Analyze overall session engagement, including expected vs. actual attendance, and monitor participant density using WiFi positioning.
+
+5. **Feedback Collection:**
    - Collect feedback from participants post-event.
    - Analyze feedback to understand participant satisfaction and preferences.
 
-5. **Product Recommendations:**
-   - Based on event attendance and feedback, recommend relevant products via email.
+6. **Product Recommendations:**
+   - Based on initial survey, event attendance and feedback, recommend relevant products via email.
    - Enhance post-event engagement by providing personalized product suggestions.
 
 ## Usage Workflow:
