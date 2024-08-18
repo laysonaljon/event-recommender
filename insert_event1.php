@@ -151,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $mail->SMTPSecure = 'tls'; // Use 'tls' for TLS encryption
         $mail->SMTPAuth = true;
         $mail->Username = 'event@eventrecommender.com';
-        $mail->Password = '[1zVfl_oEPEB';
+        $mail->Password = '}HiQT7SdHqP1';
         $mail->Port = 587; // Change to your SMTP port
         // Set the "From" address correctly
         $mail->setFrom('event@eventrecommender.com', 'New Event');
@@ -169,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
             To join us, simply click on the link below, and you\'ll be whisked away to all the excitement and fun that awaits:
     
-            <a href="http://localhost/event-recommender/event-form.php?eventID='.$event_id.'&email='.$value.'">Click here to access the event</a>
+            <a href="http://13.238.159.63/event-form.php?eventID='.$event_id.'&email='.$value.'">Click here to access the event</a>
     
             This is your opportunity to connect, learn, and enjoy. Don\'t miss out on the chance to be part of something amazing. We look forward to seeing you there!
     

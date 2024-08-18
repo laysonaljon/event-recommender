@@ -96,7 +96,7 @@ if (isset($_POST['btnSubmit'])) {
     mysqli_close($connection);
 
     // Define the API endpoint URL for localhost
-    $apiEndpoint = 'http://localhost/event-recommender/event/receive_json.php'; // Adjust the path to your project folder
+    $apiEndpoint = 'http://localhost/event/receive_json.php'; // Adjust the path to your project folder
 
     // Initialize cURL session
     $ch = curl_init($apiEndpoint);

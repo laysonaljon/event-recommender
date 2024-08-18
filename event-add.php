@@ -151,12 +151,12 @@
                     //fgetcsv($csvFile); // Skip the header row
                     $mail = new PHPMailer(true);
                     $mail->isSMTP();
-                    $mail->Host = 'sandbox.smtp.mailtrap.io';
-                    $mail->SMTPSecure = 'tls';
+                    $mail->Host = 'mail.eventrecommender.com';
+                    $mail->SMTPSecure = 'tls'; 
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'cfb40b95b2f107';
-                    $mail->Password = 'eb5ad7a1ab00fc';
-                    $mail->Port = 587;
+                    $mail->Username = 'event@eventrecommender.com';
+                    $mail->Password = 'G3Cfah@uMY&~';
+                    $mail->Port = 587; // Change to your SMTP port
                     $mail->setFrom('event@eventrecommender.com', 'New Event');
 
                     while (($row = fgetcsv($csvFile)) !== FALSE) {
@@ -188,7 +188,7 @@
                                         Click the button below to take the interest survey and secure your spot:
                                     </p>
                                     <p style="text-align: center; margin: 40px;">
-                                        <a href="http://localhost/new-event-recommender/event-recommender/event-form.php?eventID='.$event_id.'&email='.$email.'&participants_id='.$participants_id.'"
+                                        <a href="http://13.238.159.63/event-form.php?eventID='.$event_id.'&email='.$email.'&participants_id='.$participants_id.'"
                                         style="display: inline-block; padding: 12px 24px; background-color: transparent; color: #ffffff; text-decoration: none; border: 2px solid #ffffff; border-radius: 5px; font-weight: bold; font-size: 16px; transition: background-color 0.3s;">
                                             Take the Interest Survey
                                         </a>

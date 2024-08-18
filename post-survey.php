@@ -90,7 +90,7 @@
 
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="http://localhost/event-recommender/js/tailwind.config.js"></script>
+<script src="http://localhost/js/tailwind.config.js"></script>
 
 
 <!-- Your HTML code remains unchanged -->
@@ -322,10 +322,11 @@ if (isset($_POST['btnSubmit'])) {
             $mail->Host = 'sandbox.smtp.mailtrap.io';
             $mail->SMTPSecure = 'tls'; // Use 'tls' for TLS encryption
             $mail->SMTPAuth = true;
-            $mail->Username = 'cfb40b95b2f107';
-            $mail->Password = 'eb5ad7a1ab00fc';
+            $mail->Username = '156188deb90963';
+            $mail->Password = '655a23b860f42c';
             $mail->Port = 587; // Change to your SMTP port
 
+            
             // Set the "From" address correctly
             $mail->setFrom('event@eventrecommender.com', 'Event Organizer');
 

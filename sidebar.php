@@ -1,6 +1,6 @@
 <?php include 'session.php';?>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="http://localhost/event-recommender/js/tailwind.config.js"></script>
+<script src="http://localhost/js/tailwind.config.js"></script>
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 

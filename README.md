@@ -1,11 +1,11 @@
-**Optimizing Demand Generation**
+# Optimizing Demand Generation
 
 Welcome to our cutting-edge Demand Generation system that leverages events to captivate participants' interests and deliver tailor-made experiences! 🌐✨
 
-### Overview:
+## Overview:
 This repository houses the core components of our innovative demand generation system. Through meticulously crafted events, we captivate participants' attention and seamlessly guide them through a personalized journey. This journey culminates in the recommendation of sessions and products that align with their specific interests.
 
-### Key Features:
+## Key Features:
 1. **Event-Driven Engagement:**
    - Craft engaging events that pique participants' interests.
    - Dynamically adapt event content based on real-time participant interactions.
@@ -26,7 +26,7 @@ This repository houses the core components of our innovative demand generation s
    - Based on event attendance and feedback, recommend relevant products via email.
    - Enhance post-event engagement by providing personalized product suggestions.
 
-### Usage Workflow:
+## Usage Workflow:
 
 1. **Pre-event Setup:**
    - Upload event dataset and participant list to the system.
@@ -53,7 +53,7 @@ This repository houses the core components of our innovative demand generation s
    - Based on the initial interest survey, sessions attended, and post-event survey feedback, the system intelligently generates personalized product recommendations.
    - Participants receive tailored product suggestions via email, enhancing their post-event engagement and fostering continued interest.
 
-### Get Started:
+## Get Started:
 Clone this repository and follow the comprehensive documentation to seamlessly integrate EventForge into your event management strategy. Elevate your events by providing personalized experiences from pre-event anticipation to post-event satisfaction.
 
 
@@ -109,34 +109,57 @@ Clone this repository and follow the comprehensive documentation to seamlessly i
 
 4. Click on the "Import" tab.
 
-5. Choose the file `newDB.sql` from the `database` directory in your cloned repository.
+5. Choose the file `new_event.sql` from the `database` directory in your cloned repository.
 
 6. Click on the "Go" button to import the database structure and data.
 
    Now, your database is set up and populated with the necessary data.
 
-### Install NumPy and scikit-learn
 
-1. Open your terminal or command prompt.
+### Install NumPy, and scikit-learn
 
-2. Run the following command to install NumPy:
+1. **Check if Python and pip are installed:**
 
-    ```bash
-    pip install numpy
-    ```
+    - Open your terminal or command prompt.
+    - Run the following command to check if Python is installed:
 
-3. Run the following command to install scikit-learn:
+        ```bash
+        python --version
+        ```
 
-    ```bash
-    pip install scikit-learn
-    ```
+      If Python is not installed, download and install it from [Python's official website](https://www.python.org/downloads/).
+
+    - Run the following command to check if pip is installed:
+
+        ```bash
+        pip --version
+        ```
+
+      If pip is not installed, you can install it by following the instructions [here](https://pip.pypa.io/en/stable/installation/).
+
+2. **Install NumPy:**
+
+    - Run the following command to install NumPy:
+
+        ```bash
+        pip install numpy
+        ```
+
+3. **Install scikit-learn:**
+
+    - Run the following command to install scikit-learn:
+
+        ```bash
+        pip install scikit-learn
+        ```
+
 
 ### Final Notes
 
 - Ensure that your XAMPP server is running. Start it by opening the XAMPP Control Panel and clicking on the "Start" button for Apache and MySQL.
 
-- Access your application by visiting [http://localhost/event-recommender](http://localhost/event-recommender) in your web browser.
+- Access your application by visiting [http://localhost](http://localhost) in your web browser.
 
-Note: The exact steps may vary depending on your system configuration. If you encounter any issues, feel free to ask for further assistance!
+Note: The exact steps may vary depending on your system configuration. 
 
 **Experience the Future of Event Engagement with our Project!** 🌐🚀

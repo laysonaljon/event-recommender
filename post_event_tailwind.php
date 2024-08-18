@@ -59,12 +59,11 @@ $user_id = $_SESSION['user_id'];
                     $event_title = $event['event_title'];
                 ?>
                     <div class="mb-6">
-                        <div class="w-full px-4 py-2 font-bold text-left text-gray-900 bg-gray-200 rounded dark:bg-gray-800 dark:text-white focus:outline-none">
-                            <span><?php echo $event_title; ?></span>
-                            <span class="toggleTable" type="button" class="float-right">▼</span>
-                        </div>
-
-                        <div class="collapsibleTable overflow-x-auto mt-2 hidden">
+                        <button id="toggleTable_<?php echo $event_id; ?>" class="w-full px-4 py-2 font-bold text-left text-gray-900 bg-gray-200 rounded dark:bg-gray-800 dark:text-white focus:outline-none">
+                            <?php echo $event['event_title']; ?>
+                            <span id="toggleIcon_<?php echo $event_id; ?>" class="float-right">▼</span>
+                        </button>
+                        <div id="collapsibleTable_<?php echo $event_id; ?>" class="overflow-x-auto mt-2 hidden">
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
@@ -83,7 +82,7 @@ $user_id = $_SESSION['user_id'];
                                         $email = $participant['email'];
                                     ?>
                                     <tr class="border-b dark:border-gray-700">
-                                        <td class="px-4 py-3"><?php echo $participant['full_name'] ?></td>
+                                        <td class="px-4 py-3 w-48"><?php echo $participant['full_name'] ?></td>
                                         <!-- Attended Sessions -->
                                         <td class="px-4 py-3">
                                             <!-- Session 1 -->
@@ -94,7 +93,7 @@ $user_id = $_SESSION['user_id'];
                                                 if (!empty($attendances)) {
                                                     foreach($attendances as $attendance) {
                                                         echo '
-                                                            <span class="inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
+                                                            <span class="m-px inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
                                                                 ' . $attendance['session_title'] . '
                                                             </span>';
                                                     }
@@ -113,7 +112,7 @@ $user_id = $_SESSION['user_id'];
                                                 if (!empty($products)) {
                                                     foreach($products as $product) {
                                                         echo '
-                                                            <span class="inline-flex items-center rounded bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                                                            <span class="m-px inline-flex items-center rounded bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300">
                                                                 '.$product['product_name'].'
                                                             </span>';
                                                     }
@@ -136,7 +135,7 @@ $user_id = $_SESSION['user_id'];
                                                     }
                                                 } else {
                                                     // Handle case where no attendance details are found
-                                                    echo '<span>No Product details found.</span>';
+                                                    //echo '<span>No Product details found.</span>';
                                                 }
                                             ?>
                                         </td>
@@ -154,4 +153,20 @@ $user_id = $_SESSION['user_id'];
             </div>
         </section>
     </body>
+    <script>
+        document.querySelectorAll('button[id^="toggleTable_"]').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const eventId = button.id.split('_')[1];
+                const table = document.getElementById('collapsibleTable_' + eventId);
+                const icon = document.getElementById('toggleIcon_' + eventId);
+                if (table.classList.contains('hidden')) {
+                    table.classList.remove('hidden');
+                    icon.textContent = '▲';
+                } else {
+                    table.classList.add('hidden');
+                    icon.textContent = '▼';
+                }
+            });
+        });
+    </script>
 </html>
