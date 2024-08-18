@@ -8,7 +8,7 @@
     use PHPMailer\PHPMailer\Exception;
     $event_id = isset($_GET['eventID']) ? $_GET['eventID'] : null;
     $email = isset($_GET['email']) ? $_GET['email'] : null;
-    $participants_id = isset($_GET['participants_id']) ? $_GET['participants_id'] : null;
+    
     try {
         if ($event_id !== null && $email !== null) {
             $connection = openConnection();
@@ -33,90 +33,88 @@
         echo 'Error: ' . $e->getMessage();
         $message = "";
     }
+    
 ?>
 
 <?php
+
+
 if (isset($_POST['btnSubmit'])) {
     // Establish a database connection if needed
     $connection = openConnection();
 
     $email = $_GET['email'];
     $event_id = $_GET['eventID'];
-    $updateParticipantSql = "UPDATE participants set status = 1 where event_id = '$event_id' and email = '$email'";
-    if (mysqli_query($connection, $updateParticipantSql)) {
-        // echo 'Successfully update participants';
-    }
-    $updateEventSql = "UPDATE events set event_status = 2 where event_id = '$event_id'";
-    if (mysqli_query($connection, $updateEventSql)) {
-        // echo "successfully event updated to 2";
-    }
+    $participants_id = $_GET['participants_id'];
+
+    // Perform database updates
+    $updateParticipantSql = "UPDATE participants SET status = 1 WHERE event_id = '$event_id' AND email = '$email'";
+    mysqli_query($connection, $updateParticipantSql);
+    
+    $updateEventSql = "UPDATE events SET event_status = 2 WHERE event_id = '$event_id'";
+    mysqli_query($connection, $updateEventSql);
+    
     $selected_data = [];
     if (isset($_POST["technology"])) {
         $selectedTechnologies = $_POST["technology"];
-
+    
         foreach ($selectedTechnologies as $selectedTechId) {
             $selectedDropdownValue = $_POST["dropdown_" . $selectedTechId];
             // Insert the selected technology_id and dropdown value into your database
-             $insertSql = "INSERT INTO response (event_id, email, response) VALUES ('$event_id','$email', '$selectedDropdownValue')";
-             $selected_data[] = $selectedDropdownValue;
-             if (mysqli_query($connection, $insertSql)) {
-                //  echo 'Data inserted successfully for technology ID ' . $selectedDropdownValue . '<br>';
-             } else {
-                 echo 'Error inserting data for technology ID ' . $selectedDropdownValue . ': ' . mysqli_error($con) . '<br>';
-             }
+            $insertSql = "INSERT INTO response (event_id, email, response) VALUES ('$event_id','$email', '$selectedDropdownValue')";
+            mysqli_query($connection, $insertSql);
+            $selected_data[] = $selectedDropdownValue;
         }
     }
-    // Retrieve the dataset
-    $datasetSql = "SELECT * from event_sessions where event_id = '$event_id'";
-    
-    // Execute the SQL query and fetch the data
-    $result = mysqli_query($connection, $datasetSql);
-    
-    // Initialize an array to store dataset entries
-    $dataset = array();
 
-    // Fetch rows and add them to the dataset array
+    // Retrieve the dataset
+    $datasetSql = "SELECT * FROM event_sessions WHERE event_id = '$event_id'";
+    $result = mysqli_query($connection, $datasetSql);
+    $dataset = [];
+
     while ($row = mysqli_fetch_assoc($result)) {
         $dataset[] = $row;
     }
-    /// Combine the data into an associative array
-    $dataToPass = array(
+
+    // Combine the data into an associative array
+    $dataToPass = [
         "user_preferences" => $selected_data,
         "dataset" => $dataset
-    );
+    ];
 
     // Encode the data as JSON
     $jsonData = json_encode($dataToPass);
-    // Create a temporary file to store the JSON data
     $tempFile = tempnam(sys_get_temp_dir(), 'json_data');
     file_put_contents($tempFile, $jsonData);
-
-    // Use escapeshellarg to properly escape the file path for the command line
     $fileArg = escapeshellarg($tempFile);
-
-    // Call your Python script with the file path as an argument
     $command = "python new-recommendation.py $fileArg";
     exec($command, $output, $returnCode);
-
-    // Remove the temporary file
     unlink($tempFile);
 
-    $outputFileName = "$participants_id.png";
-    $textToEncode = $participants_id;
     // Generate the QR code
+    $outputFileName = "$email.png";
+    $textToEncode = $email;
     QRcode::png($textToEncode, $outputFileName, QR_ECLEVEL_L, 3);
+
     if ($returnCode === 0) {
-        // The Python script executed successfully
-        $emailContent = '<h1>Session Information:</h1><br>'; // Initialize email content
+        $emailContent = ''; // Initialize email content
         $printed_session_ids = [];
         $reserved_time1 = [];
         $reserved_time2 = [];
-    
+
         foreach ($output as $line) {
-            // Parse the JSON data sent by the Python script
             $json_data = json_decode($line, true);
-    
+
             if ($json_data) {
+                $emailContent = '
+                    <body style="text-align: center; font-family: Arial, sans-serif; background-color: #203149; color: #333; margin: 0 auto; padding: 20px; border-radius: 10px; max-width: 900px;">
+                        <h1 style="color: #ffffff; font-size: 36px; font-weight: bold; font-family: Remachine Script, cursive;">Your Journey Map is Ready!</h1>
+                        <div style="margin: 0 auto; max-width: 600px;">
+                            <p style="font-size: 20px; line-height: 150%; text-align: center; color: #ffffff; margin-bottom: 15px;">
+                                Here\'s your personalized journey map based on the interests you\'ve selected in the survey.  
+                            </p>
+                    ';
+
                 foreach ($json_data as $result) {
                     $session_id = $result['Session ID'];
                     $session_title = $result['Session Title'];
@@ -124,91 +122,121 @@ if (isset($_POST['btnSubmit'])) {
                     $time1 = $result['Timeam'];
                     $time2 = $result['Timepm'];
                     $speaker = $result['Speaker'];
-                    // Create a unique identifier for the time slot based on Date1 and the time
                     $time_slot_identifier = "$date1-$time1";
-    
-                    // Check if the current session_id is different from the previous one
+
                     if (!in_array($session_title, $printed_session_ids)) {
-                        // Check if Time1 is available and Date1/Time1 doesn't conflict with previous recommendations
                         if (!empty($time1) && !in_array($time_slot_identifier, $reserved_time1)) {
-                            // Add session information to the email content with Time1
-                            $emailContent .= "<p>Session Title: " . $result['Session Title'] . "</p>";
-                            $emailContent .= "<p>Speaker: ". $speaker ."</p>";
-                            $emailContent .= "<p>Date: $date1</p>";
-                            $emailContent .= "<p>Time Morning: $time1</p>";
-                            $emailContent .= "<hr>";
-                            // Reserve Time1
+                            $emailContent .= '
+                            <div style="background-color: #bcd5ca; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">'.$result['Session Title'].'</p>
+                                
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/8801/8801434.png" alt="Speaker Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$speaker.'</p>
+                                </div>
+
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://icones.pro/wp-content/uploads/2022/08/icone-du-calendrier-des-evenements-vert.png" alt="Calendar Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$date1.'</p>
+                                </div>
+
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://icones.pro/wp-content/uploads/2021/03/symbole-de-l-horloge-verte.png" alt="Calendar Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$time1.'</p>
+                                </div>
+                            </div>
+                            ';
                             $reserved_time1[] = $time_slot_identifier;
                             $sqlInsertSessionRecommend = "INSERT INTO sesion_recommend (event_id, session_title, participants_id) VALUES ('$event_id', '$session_title', '$participants_id')";
-                            if (mysqli_query($connection, $sqlInsertSessionRecommend)) {
-                                // echo "Session recommendation inserted successfully.<br>";
-                            } else {
-                                echo "Error inserting session recommendation: " . mysqli_error($connection) . "<br>";
-                            }
+                            mysqli_query($connection, $sqlInsertSessionRecommend);
                         } elseif (!empty($time2) && !in_array($time_slot_identifier, $reserved_time2)) {
-                            // Add session information to the email content with Time2
-                            $emailContent .= "<p>Session Title: " . $result['Session Title'] . "</p>";
-                            $emailContent .= "<p>Speaker: ". $speaker ."</p>";
-                            $emailContent .= "<p>Date: $date1</p>";
-                            $emailContent .= "<p>Time Afternoon: $time2</p>";
-                            $emailContent .= "<hr>";
-                            // Reserve Time2
+                            $emailContent .= '
+                            <div style="background-color: #bcd5ca; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center; ">
+                                <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">'.$result['Session Title'].'</p>
+                                
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/8801/8801434.png" alt="Speaker Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px; margin-bottom: -4px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$speaker.'</p>
+                                </div>
+
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://icones.pro/wp-content/uploads/2022/08/icone-du-calendrier-des-evenements-vert.png" alt="Calendar Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$date1.'</p>
+                                </div>
+
+                                <div style="display: inline-block; margin-right: 20px; text-align: center; align-items: center;">
+                                    <img src="https://icones.pro/wp-content/uploads/2021/03/symbole-de-l-horloge-verte.png" alt="Calendar Icon" style="display: inline-block; width: 20px; height: 20px; margin-right: 5px;">
+                                    <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; display: inline-block;">'.$time2.'</p>
+                                </div>
+                            </div>
+                            ';
                             $reserved_time2[] = $time_slot_identifier;
                             $sqlInsertSessionRecommend = "INSERT INTO sesion_recommend (event_id, session_title, participants_id) VALUES ('$event_id', '$session_title', '$participants_id')";
-                            if (mysqli_query($connection, $sqlInsertSessionRecommend)) {
-                                // echo "Session recommendation inserted successfully.<br>";
-                            } else {
-                                echo "Error inserting session recommendation: " . mysqli_error($connection) . "<br>";
-                            }
+                            mysqli_query($connection, $sqlInsertSessionRecommend);
                         }
-                        // Add the current session_id to the printed_session_ids array
                         $printed_session_ids[] = $session_title;
                     }
                 }
+
+                $emailContent .= '
+                    <div style="background-color: #203149; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                        <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #ffffff;">Your registration has been confirmed!</p>
+                        <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px; color: #ffffff;">Please save the QR code below to enter the event:</p>
+                        <div style="margin: 0 auto;">
+                            <img src="'.$outputFileName.'" alt="QR Code">
+                        </div>
+                    </div>
+                </div>
+                </body>';
             } else {
-                echo 'Invalid JSON data received from Python<br>';
+                // Handle the case where the JSON data is invalid or empty
+                echo "Error: Invalid or empty JSON data";
             }
         }
+
+        // Email configuration
         $mail = new PHPMailer(true);
-        // SMTP settings (you may need to configure these)
-        $mail->isSMTP();
-        $mail->Host = 'sandbox.smtp.mailtrap.io';
-        $mail->SMTPSecure = 'tls';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'cfb40b95b2f107';
-        $mail->Password = 'eb5ad7a1ab00fc';
-        $mail->Port = 587;
-    
-        // Set the "From" address correctly
-        $mail->setFrom('event@laundryandwash.com', 'Event Organizer');
-    
-        $mail->addAddress($email); // Recipient's email address
-        $mail->isHTML(true);
-        $mail->Subject = "SESSION RECOMMENDED";
-    
-        // Add the QR code image as an attachment
-        $mail->addAttachment($outputFileName);
-    
-        // Embed the QR code image in the email body
-        $emailContent .= '<br><img src="cid:' . $outputFileName . '>';
-        $mail->Body = $emailContent;
-    
-        // Send the email
-        if ($mail->send()) {
-            echo "Email sent successfully.";
-        } else {
-            echo "Email sending failed: " . $mail->ErrorInfo;
+
+        try {
+            // Server settings
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host = 'mail.eventrecommender.com';
+            $mail->SMTPSecure = 'tls'; 
+            $mail->SMTPAuth = true;
+            $mail->Username = 'event@eventrecommender.com';
+            $mail->Password = 'G3Cfah@uMY&~';
+            $mail->Port = 587; // Change to your SMTP port
+            $mail->setFrom('event@eventrecommender.com', 'New Event');
+
+            // Recipients
+            $mail->addAddress($email);
+
+            // Attachments
+            $mail->addAttachment($outputFileName); // Add QR code attachment
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'Your Personalized Journey Map';
+            $mail->Body = $emailContent;
+
+            // Send the email
+            $mail->send();
+            echo 'Email has been sent';
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
+
+        // Clean up
+        unlink($outputFileName); // Delete the QR code image
     } else {
-        // There was an error executing the Python script
-        echo "Error executing Python script. Return code: $returnCode";
+        echo "An error occurred while running the Python script.";
     }
     header("Refresh:0");
-    
 }
 ?>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="http://localhost/new-event-recommender/event-recommender/js/tailwind.config.js"></script>
+<script src="/js/tailwind.config.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <style>
@@ -241,17 +269,17 @@ if (isset($_POST['btnSubmit'])) {
                             echo '<img class="h-auto max-w-full mx-auto" src="https://media4.giphy.com/media/Bc4oup2pdP5iKFAYiF/200w.gif?cid=6c09b9520ewqcrypuassw0qj1nck4jcukefjjr5322adfum0&ep=v1_gifs_search&rid=200w.gif&ct=g" alt="image description">';
                         } else {
                             if ($reqPersons['status'] == 1) {
-                                echo '<h5 class="mb-3 text-base font-semibold text-gray-900 md:text-l dark:text-white">Thank you for sharing your Interest with us!!</h5>';
-                                echo '<p class="mb-3 text-sm font-normal text-gray-500 dark:text-gray-400">We will send you a journey map for the event based on your interest.</p>'; 
+                                echo '<h5 class="mb-3 text-base font-semibold text-gray-900 md:text-l dark:text-white text-center">Thank you for sharing your Interest with us!!</h5>';
+                                echo '<p class="mb-3 text-sm font-normal text-gray-500 dark:text-gray-400 text-center">We will send you a journey map for the event based on your interest.</p>'; 
                                 echo '<img class="h-auto max-w-full mx-auto" src="https://assets-global.website-files.com/6091b7081a1d7e13ccd7603a/63f018f7c54c02f7cdc1c256_giphy-3.gif" alt="image description">';
                             } elseif (isset($message)) {
                                 echo "No email and event ID found";
                             } else {
                         ?>
-                        <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">
+                        <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white text-center">
                         Interest Survey Form
                         </h5>
-                        <p class="mb-3 text-sm font-normal text-gray-500 dark:text-gray-400">Tell us your interest and we'll take care of the rest!!</p>
+                        <p class="mb-3 text-sm font-normal text-gray-500 dark:text-gray-400 text-center">Tell us your interest and we'll take care of the rest!!</p>
 
                         <form method="post">
                             <input type="hidden" value="<?php echo $_GET['eventID'] ?>" name="event_id">

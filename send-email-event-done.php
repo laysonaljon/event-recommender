@@ -40,7 +40,7 @@ try {
         $to = $row['email'];
         $event_id = $row['event_id'];
         $subject = "POST SURVEY EVENT";
-        $message = '<a href="http://localhost/event-recommender/post-survey.php?eventID=' . $event_id . '&email=' . $to . '">click to access post survey event</a>';
+        $message = '<a href="http://13.238.159.63/post-survey.php?eventID=' . $event_id . '&email=' . $to . '">click to access post survey event</a>';
         
         $mail->setFrom($from);
         $mail->addAddress($to);

@@ -28,7 +28,7 @@ $sessions = getSessionByEvent($event_id);
         <!-- Start coding here -->
         <form id="qr-form" method="post">
             <input type="hidden" name="event_id" value="<?php echo $_GET['event_id']; ?>">
-            <input class="form-control" id="scanned-data" type="text" name="scanned_data" placeholder="Scanned Data" readonly>
+            <input class="form-control" id="scanned-data" type="hidden" name="scanned_data" placeholder="Scanned Data" readonly>
             <!-- Dropdown menu -->
             <div class="flex items-center justify-center m-10">
                 <div class="relative">
